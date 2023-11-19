@@ -1,0 +1,63 @@
+1. paste webutil folder in the forms folder
+2. copy jacob.jar (or all jar from java folder) in the java folder  
+3. Add rt.jar location path in the end of CLASSPATH forms/server/default.env which is rt.jar.	
+    CLASSPATH=D:\DevSuiteHome_1\j2ee\OC4J_BI_Forms\applications\formsapp\formsweb\WEB-INF\lib\frmsrv.jar;
+	          D:\DevSuiteHome_1\jlib\repository.jar;D:\DevSuiteHome_1\jlib\ldapjclnt10.jar;
+			  D:\DevSuiteHome_1\jlib\debugger.jar;D:\DevSuiteHome_1\jlib\ewt3.jar;
+			  D:\DevSuiteHome_1\jlib\share.jar;D:\DevSuiteHome_1\jlib\utj.jar;D:\DevSuiteHome_1\jlib\zrclient.jar;
+			  D:\DevSuiteHome_1\reports\jlib\rwrun.jar;D:\DevSuiteHome_1\forms\java\frmwebutil.jar;
+			  D:\DevSuiteHome_1\jdk\jre\lib\rt.jar
+(You can search the 'rt.jar' in devsuitehome_1 to get the full path)
+
+##########################################################################################
+
+In case of Application server DevSuiteHome_1 will be Replaced by D:\Oracle\FrHome_1
+
+##########################################################################################
+
+4. create a folder named allattachment in D drive
+
+4. webutil.cfg file configuaration 
+		transfer.database.enabled=TRUE
+		transfer.appsrv.enabled=TRUE
+		transfer.appsrv.workAreaRoot=c:\temp
+		transfer.appsrv.write.1=c:\temp
+		transfer.appsrv.read.1=c:\temp
+
+/*--------------------------Dekko ERP-----------------------*/
+		transfer.database.enabled=TRUE
+		transfer.appsrv.enabled=TRUE
+		transfer.appsrv.workAreaRoot=D:\allattachment
+		transfer.appsrv.accessControl=FALSE
+		#List transfer.appsrv.read.<n> directories
+		transfer.appsrv.read.1=ERP_FOLDER_PATH[Exp. D:\DFL1209]\attachment\image
+		transfer.appsrv.read.2=ERP_FOLDER_PATH[Exp. D:\DFL1209]\attachment\file
+		transfer.appsrv.read.3=ERP_FOLDER_PATH[Exp. D:\DFL1209]\attachment\audio
+		transfer.appsrv.read.4=ERP_FOLDER_PATH[Exp. D:\DFL1209]\attachment\video
+		#List transfer.appsrv.write.<n> directories
+		transfer.appsrv.write.1=ERP_FOLDER_PATH[Exp. D:\DFL1209]\attachment\image
+		transfer.appsrv.write.2=ERP_FOLDER_PATH[Exp. D:\DFL1209]\attachment\file
+		transfer.appsrv.write.3=ERP_FOLDER_PATH[Exp. D:\DFL1209]\attachment\audio
+		transfer.appsrv.write.4=ERP_FOLDER_PATH[Exp. D:\DFL1209]\attachment\video
+		
+5. copy calendar90.pll, webutil.pll (and webutil.plx) in the forms
+	
+6. copy the txt written in key.txt and paste to forms/server/formsweb.cfg at end.
+
+7. copy the database tns into the forms tns.
+
+8. copy sec_pllib.pll in the forms folder.
+
+9. copy sec_pllib.plx in the forms folder.
+
+10. Paste keytyped.jar in the forms\java folder
+
+11. type keytyped.jar in the formsweb.cfg file in webutil.archive
+
+12. In case of 10g App Server (Not developer suite) copy all files from forms-server folder here and paste it into forms\server folder.
+
+13. Type blink.jar in the formsweb.cfg file in webutil.archive
+
+14. In case of different PC (Server Computer) please off windows firewall of the server.
+
+15. After configure just run by : http://server:7778/forms/frmservlet?config=ERP  -------------[name of key]

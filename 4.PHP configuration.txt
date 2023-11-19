@@ -1,0 +1,24 @@
+------------------- XAMPP INSTALLATION -----------------------
+
+1. At first install xampp (Versiion - xampp-win32-1.7.1) in D Drive.
+2. Then go to installed folder and open xampp control.
+3. Then start the Apache server.
+4. If Apache server is started and Green signal is appeared in running mode then installation is OK.
+5. If a message is given that port 80 is busy then we have to change the port.
+   (Note : if oracle application server is installed before then - port 80 is occupied by oracle application server)
+6. For this first go to below directory.
+    D:\xampp\apache\conf
+7. Open httpd.conf
+	Then search 80 or Listen 80 and change to 82.
+8. Then start the Apache server.
+9. Then go to D:\xampp\php directory and open php.ini file. Then search the file using 'oci' keyword and find first occurance ';extension=php_oci8.dll'
+   and remove comments by removing ';'
+
+------------------- CONFIGURATION PART -----------------
+1. Copy all files from htdocs in the htdocs folder.
+2. Then go to D:\xampp\htdocs\config directory.
+3. Then open dbconnect.php file and change user_name and pass_word as database.
+4. Then go to references table and find the key 'EXCEL_EXPORT_URL'.
+5. Then in name column give http://ip_address:port/ 
+   (Example - http://192.168.66.30:82/) as value
+6. In case of new excel file put the file in htdocs folder and call from Export.xls button from Oracle Form.

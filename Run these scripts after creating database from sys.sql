@@ -1,0 +1,10 @@
+GRANT EXECUTE ON dbms_crypto TO PUBLIC;
+GRANT EXECUTE ON dbms_sqlhash TO PUBLIC;
+GRANT EXECUTE ON dbms_obfuscation_toolkit TO PUBLIC;
+GRANT EXECUTE ON dbms_obfuscation_toolkit_ffi TO PUBLIC;
+GRANT EXECUTE ON dbms_crypto_ffi TO PUBLIC;
+GRANT EXECUTE ON dbms_crypto TO bottomerp_old;
+GRANT SELECT ON v_$session TO bottomerp_old;
+GRANT SELECT ON v_$mystat TO bottomerp_old;
+GRANT CREATE JOB TO bottomerp_old;
+GRANT EXECUTE ON DBMS_LOCK TO bottomerp_old;

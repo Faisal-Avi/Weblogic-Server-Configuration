@@ -1,0 +1,24 @@
+----------------- DATABASE PART------------------------
+1. During database installation must choose AL32UTF8 for unicode.
+2. After Installation of database, create a user using below command ..
+   SQL> CREATE USER user_name IDENTIFIED BY pass_word;
+3. Then grant privilege to created user ..
+   SQL> GRANT DBA to user_name;
+4. Then run below scripts in SYS user.
+   a. first go to BIN directory of database;
+   b. open sqlplus as SYS USER;
+   bin > SQLPLUS / AS SYSDBA;
+   c. then run below scripts
+   GRANT EXECUTE ON dbms_crypto TO PUBLIC;
+   GRANT EXECUTE ON dbms_sqlhash TO PUBLIC;
+   GRANT EXECUTE ON dbms_obfuscation_toolkit TO PUBLIC;
+   GRANT EXECUTE ON dbms_obfuscation_toolkit_ffi TO PUBLIC;
+   GRANT EXECUTE ON dbms_crypto_ffi TO PUBLIC;
+   GRANT EXECUTE ON dbms_crypto TO foodv2win;
+   GRANT SELECT ON v_$session TO foodv2win;
+   GRANT SELECT ON v_$mystat TO foodv2win;
+   GRANT CREATE JOB TO foodv2win;
+   GRANT EXECUTE ON DBMS_LOCK TO foodv2win;
+5. Then import the dump file using datapump.
+
+----------- END of DATABASE IMPORTING -----------------------

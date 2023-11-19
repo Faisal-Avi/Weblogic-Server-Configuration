@@ -1,0 +1,203 @@
+1. Create user and Import
+--------------------------
+sqlplus / as sysdba
+
+sql> alter session set container = orclpdb;
+
+check database status by :
+
+sql> select open_mode from v$database;
+
+if database is in mount mode then run below command :
+
+sql> alter database open;
+
+Then run below scripts :
+
+1. sql>create user bottomerp identified by bottomerp;
+2. sql>grant dba to bottomerp;
+3. sql>GRANT EXECUTE ON dbms_crypto TO PUBLIC;
+	   GRANT EXECUTE ON dbms_sqlhash TO PUBLIC;
+	   GRANT EXECUTE ON dbms_obfuscation_toolkit TO PUBLIC;
+	   GRANT EXECUTE ON dbms_obfuscation_toolkit_ffi TO PUBLIC;
+	   GRANT EXECUTE ON dbms_crypto_ffi TO PUBLIC;
+	   GRANT EXECUTE ON dbms_crypto TO bottomerp;
+	   GRANT SELECT ON v_$session TO bottomerp;
+	   GRANT SELECT ON v_$mystat TO bottomerp;
+	   GRANT CREATE JOB TO bottomerp;
+	   GRANT EXECUTE ON DBMS_LOCK TO bottomerp;
+4. sql>grant select on sys.user$ to bottomerp;
+
+then connect to bottomerp.
+
+and run below script -
+------------------------script start -----------------------------------
+CREATE OR REPLACE TYPE  "T_STRING_AGG" AS OBJECT
+
+(
+
+  g_string  VARCHAR2(32767),
+
+
+
+  STATIC FUNCTION ODCIAggregateInitialize(sctx  IN OUT  t_string_agg)
+
+    RETURN NUMBER,
+
+
+
+  MEMBER FUNCTION ODCIAggregateIterate(self   IN OUT  t_string_agg,
+
+                                       value  IN      VARCHAR2 )
+
+     RETURN NUMBER,
+
+
+
+  MEMBER FUNCTION ODCIAggregateTerminate(self         IN   t_string_agg,
+
+                                         returnValue  OUT  VARCHAR2,
+
+                                         flags        IN   NUMBER)
+
+    RETURN NUMBER,
+
+
+
+  MEMBER FUNCTION ODCIAggregateMerge(self  IN OUT  t_string_agg,
+
+                                     ctx2  IN      t_string_agg)
+
+    RETURN NUMBER
+
+);
+
+/
+
+
+CREATE OR REPLACE TYPE BODY  "T_STRING_AGG" IS
+
+  STATIC FUNCTION ODCIAggregateInitialize(sctx  IN OUT  t_string_agg)
+
+    RETURN NUMBER IS
+
+  BEGIN
+
+    sctx := t_string_agg(NULL);
+
+    RETURN ODCIConst.Success;
+
+  END;
+
+
+
+  MEMBER FUNCTION ODCIAggregateIterate(self   IN OUT  t_string_agg,
+
+                                       value  IN      VARCHAR2 )
+
+    RETURN NUMBER IS
+
+  BEGIN
+
+    SELF.g_string := self.g_string || ',' || value;
+
+    RETURN ODCIConst.Success;
+
+  END;
+
+
+
+  MEMBER FUNCTION ODCIAggregateTerminate(self         IN   t_string_agg,
+
+                                         returnValue  OUT  VARCHAR2,
+
+                                         flags        IN   NUMBER)
+
+    RETURN NUMBER IS
+
+  BEGIN
+
+    returnValue := SUBSTR(SELF.g_string, 2);
+
+    RETURN ODCIConst.Success;
+
+  END;
+
+
+
+  MEMBER FUNCTION ODCIAggregateMerge(self  IN OUT  t_string_agg,
+
+                                     ctx2  IN      t_string_agg)
+
+    RETURN NUMBER IS
+
+  BEGIN
+
+    SELF.g_string := SELF.g_string || ctx2.g_string;
+
+    RETURN ODCIConst.Success;
+
+  END;
+
+END;
+
+/
+
+
+create or replace FUNCTION WM_CONCAT (p_input VARCHAR2)
+
+RETURN VARCHAR2
+
+PARALLEL_ENABLE AGGREGATE USING t_string_agg;
+
+/
+----------------------script end-----------------------------------------------
+
+Then import database using below script -
+
+impdp bottomerp/bottomerp@orclpdb schemas=bottomerp directory=DATA_PUMP_DIR dumpfile=group.DMP
+
+----------------------------------------------------------------------------------------
+
+2. Paste 2 below line in last of sqlnet.ora file.
+
+SQLNET.ALLOWED_LOGON_VERSION_CLIENT = 8
+SQLNET.ALLOWED_LOGON_VERSION_SERVER = 8
+
+
+Then open command prompt then connect as sysdba and run below command ...
+
+sql> alter session set container = orclpdb;
+
+then alter the database with given password (must do it)
+
+sql> alter database bottomerp identified by bottomerp;
+
+-----------------------------------------------------------
+In application server use below key in application server:
+
+[erp]
+form=E:\DEKKO_ERP\LOGIN_GARMENTS.fmx usesdi=yes
+userid=bottomerp/bottomerp@orclpdb
+width=1024
+height=768
+colorscheme=blue
+pageTitle=KiRON
+imagebase=codebase
+#archive=handlemouseevent.jar,keypressed.jar,frmall.jar,rolloverbutton.jar,getclientinfo.jar,infobutton.jar,images.jar,JScriptWindowPJC.jar,GetImageFileName.jar,FileDetails.jar,HISRAMA.jar,PrintPJC.jar,FileDropper.jar,DragnDrop.jar,DnD.jar,SWTree1.jar,laf_902.jar,laf_1012.jar
+webUtilArchive=frmwebutil.jar,handlemouseevent.jar,keypressed.jar,jacob.jar,handleimage4.jar,ATIButton.jar,blink.jar,keytyped.jar
+IE=native
+baseHTMLjinitiator=webutiljpi.htm
+baseHTMLjpi=webutiljpi.htm
+jpi_download_page=http://192.168.66.30:7778/forms/webutil/jre-6u17-windows-i586-s.exe
+jpi_classid=clsid:CAFEEFAC-0016-0000-0017-ABCDEFFEDCBA
+jpi_codebase=http://java.sun.com/products/plugin/autodl/jinstall-1_6_0-windows-i586.cab#Version=1,6,0,17
+jpi_mimetype=application/x-java-applet
+lookAndFeel=Oracle
+#splashscreen=dekko_splash.gif
+logo=dekko_logo.gif
+separateFrame=true
+render=yes
+heartbeart=4
+
+

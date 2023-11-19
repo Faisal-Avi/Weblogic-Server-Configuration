@@ -1,0 +1,21 @@
+HOW TO IMPORT ORACLE 12C DUMP INTO 11G DATABASE
+January 24, 2017 Mudhalvan Leave a comment
+What is the scenario:
+Exported the database using 12c expdp. Now we have to import into 11g Rel 2 database.
+
+What Command you used:
+impdp system/system directory=backup dumpfile=test12c.dmp logfile=test12.log schemas=test version=11.2
+
+What Error message you get:
+ORA-39142 incompatible version
+
+Solution:
+impdp system/system directory=backup dumpfile=test12c.dmp logfile=test12.log schemas=test version=latest
+
+Note: You can also do expdp again with version=11.2 and do direct impdp on target database.
+
+
+top 5 reasons for 19c database:
+
+https://www.youtube.com/watch?v=oqSsoBCrlq8&ab_channel=OracleDatabaseSolutions
+

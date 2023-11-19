@@ -1,0 +1,186 @@
+Database Server :
+---------------------
+1. Install Oracle Database v- 11.2.0.3
+2. Configure Database.
+3. Export DMP from live server.
+4. Copy DMP to Target
+5. Upload DMP in Target Server.
+6. Data crosscheck with live server
+
+Application:
+---------------
+1. Install AS 10g
+2. Configure Form Server
+3. Configure Report Server
+4. Copy Source code from live server.
+5. Connect with DB server.
+6. Check Application.
+   --> Check Image Upload
+   --> Check Report
+
+PHP:
+-------------
+1. Install Xampp
+2. Xampp server configure
+3. Copy source code to htdocs location
+
+
+Batch File
+---------------------
+1. DMP copy to Backup Server from database server using Task Scheduler
+2. Source file copy to backup server from application server using Task Scheduler
+
+####################### CONFIGURATION PROCESS ########################
+
+------------------##### DATABASE PART #####------------------------
+
+1. During database installation must choose AL32UTF8 for unicode.
+2. After Installation of database, create a user using below command ..
+   SQL> CREATE USER user_name IDENTIFIED BY pass_word;
+3. Then grant privilege to created user ..
+   SQL> GRANT DBA to user_name;
+4. Then run below scripts in SYS user.
+   a. first go to BIN directory of database;
+   b. open sqlplus as SYS USER;
+   bin > SQLPLUS / AS SYSDBA;
+   c. then run below scripts
+   GRANT EXECUTE ON dbms_crypto TO PUBLIC;
+   GRANT EXECUTE ON dbms_sqlhash TO PUBLIC;
+   GRANT EXECUTE ON dbms_obfuscation_toolkit TO PUBLIC;
+   GRANT EXECUTE ON dbms_obfuscation_toolkit_ffi TO PUBLIC;
+   GRANT EXECUTE ON dbms_crypto_ffi TO PUBLIC;
+   GRANT EXECUTE ON dbms_crypto TO foodv2win;
+   GRANT SELECT ON v_$session TO foodv2win;
+   GRANT SELECT ON v_$mystat TO foodv2win;
+   GRANT CREATE JOB TO foodv2win;
+   GRANT EXECUTE ON DBMS_LOCK TO foodv2win;
+5. Then import the dump file using datapump.
+
+----------------- ##### APPLICATION SERVER #####-------------------------
+
+---------------------- ## FORM SERVER ## -------------------------------
+
+1. paste webutil folder in the forms folder
+2. copy jacob.jar (or all jar from java folder) in the java folder  
+3. Add rt.jar location path in the end of CLASSPATH forms/server/default.env which is rt.jar.	
+    CLASSPATH=D:\DevSuiteHome_1\j2ee\OC4J_BI_Forms\applications\formsapp\formsweb\WEB-INF\lib\frmsrv.jar;
+	          D:\DevSuiteHome_1\jlib\repository.jar;D:\DevSuiteHome_1\jlib\ldapjclnt10.jar;
+			  D:\DevSuiteHome_1\jlib\debugger.jar;D:\DevSuiteHome_1\jlib\ewt3.jar;
+			  D:\DevSuiteHome_1\jlib\share.jar;D:\DevSuiteHome_1\jlib\utj.jar;D:\DevSuiteHome_1\jlib\zrclient.jar;
+			  D:\DevSuiteHome_1\reports\jlib\rwrun.jar;D:\DevSuiteHome_1\forms\java\frmwebutil.jar;
+			  D:\DevSuiteHome_1\jdk\jre\lib\rt.jar
+(You can search the 'rt.jar' in devsuitehome_1 to get the full path)
+
+-----------------------------------------------------------------------------------
+
+Note : In case of Application server DevSuiteHome_1 will be Replaced by D:\Oracle\FrHome_1
+
+-----------------------------------------------------------------------------------
+
+4. create a folder named 'allattachment' in D drive
+
+4. webutil.cfg file configuaration 
+		transfer.database.enabled=TRUE
+		transfer.appsrv.enabled=TRUE
+		transfer.appsrv.workAreaRoot=c:\temp
+		transfer.appsrv.write.1=c:\temp
+		transfer.appsrv.read.1=c:\temp
+
+/*--------------------------Dekko ERP-----------------------*/
+		transfer.database.enabled=TRUE
+		transfer.appsrv.enabled=TRUE
+		transfer.appsrv.workAreaRoot=D:\allattachment
+		transfer.appsrv.accessControl=FALSE
+		#List transfer.appsrv.read.<n> directories
+		transfer.appsrv.read.1=ERP_FOLDER_PATH[Exp. D:\DFL1209]\attachment\image
+		transfer.appsrv.read.2=ERP_FOLDER_PATH[Exp. D:\DFL1209]\attachment\file
+		transfer.appsrv.read.3=ERP_FOLDER_PATH[Exp. D:\DFL1209]\attachment\audio
+		transfer.appsrv.read.4=ERP_FOLDER_PATH[Exp. D:\DFL1209]\attachment\video
+		#List transfer.appsrv.write.<n> directories
+		transfer.appsrv.write.1=ERP_FOLDER_PATH[Exp. D:\DFL1209]\attachment\image
+		transfer.appsrv.write.2=ERP_FOLDER_PATH[Exp. D:\DFL1209]\attachment\file
+		transfer.appsrv.write.3=ERP_FOLDER_PATH[Exp. D:\DFL1209]\attachment\audio
+		transfer.appsrv.write.4=ERP_FOLDER_PATH[Exp. D:\DFL1209]\attachment\video
+		
+5. copy calendar90.pll, webutil.pll (and webutil.plx) in the forms
+	
+6. copy the txt written in key.txt and paste to forms/server/formsweb.cfg at end.
+
+7. copy the database tns into the forms tns.
+
+8. copy sec_pllib.pll in the forms folder.
+
+9. copy sec_pllib.plx in the forms folder.
+
+10. Paste keytyped.jar in the forms\java folder
+
+11. type keytyped.jar in the formsweb.cfg file in webutil.archive
+
+12. In case of 10g App Server (Not developer suite) copy all files from forms-server folder here and paste it into forms\server folder.
+
+13. Type blink.jar in the formsweb.cfg file in webutil.archive
+
+14. In case of different PC (Server Computer) please off windows firewall of the server.
+
+15. After configure just run by : http://server:7778/forms/frmservlet?config=ERP  -------------[name of key]
+
+----------------- ## REPORT SERVER ## --------------------------------
+
+step-1 : First go to report configuration file directory D:\DevSuiteHome_1\reports\conf or D:\oracle\FRHome_1\reports\conf
+
+step-2 : Then open cgicmd.dat file
+
+step-3 : Then go below until the end of the file
+
+step-4 : Then paste last line of this file
+
+step-5 : Then go to company_tbl and then go to rpt_server column and see the value.
+
+step-6 : Then check the first key below and the value of the rpt server column. These must be same.
+
+step-7 : Then ReStart Application server service.
+
+step-8 : In Case of Bind to report server failed then open computer network and disable all network and activate only one network.
+
+step-9 : In order to Increase max number of connected user
+
+	Find the file $ORACLE_HOME/reports/conf/repservername.conf
+
+	where $ORACLE_HOME is your applications (not infrastructure) home, and repservername is your reports server name, i.e. rep_markr.
+	Find the line <connection maxConnect="20" idleTimeOut="15">
+	Change the maxConnect value to something like "100"
+	Restart your reports server.
+
+-----------------------------------------------------------------------------------------------
+rep_food_migwin: userid=foodv2win/Winter2017@orcldb destype=cache desformat=pdf %*
+-----------------------------------------------------------------------------------------------
+
+----------------------##### XAMPP SERVER OF EXCEL EXPORT #####---------------------------------
+
+------------------- XAMPP INSTALLATION -----------------------
+
+1. At first install xampp (Versiion - xampp-win32-1.7.1) in D Drive.
+2. Then go to installed folder and open xampp control.
+3. Then start the Apache server.
+4. If Apache server is started and Green signal is appeared in running mode then installation is OK.
+5. If a message is given that port 80 is busy then we have to change the port.
+   (Note : if oracle application server is installed before then - port 80 is occupied by oracle application server)
+6. For this first go to below directory.
+    D:\xampp\apache\conf
+7. Open httpd.conf
+	Then search 80 or Listen 80 and change to 82.
+8. Then start the Apache server.
+9. Then go to D:\xampp\php directory and open php.ini file. Then search the file using 'oci' keyword and find first occurance ';extension=php_oci8.dll'
+   and remove comments by removing ';'
+
+------------------- CONFIGURATION PART -----------------
+
+1. Copy all files from htdocs in the htdocs folder.
+2. Then go to D:\xampp\htdocs\config directory.
+3. Then open dbconnect.php file and change user_name and pass_word as database , D:\xampp\htdocs\idea_analytics, D:\xampp\htdocs\canteen\dbconfig
+4. Then go to references table and find the key 'EXCEL_EXPORT_URL'.
+5. Then in name column give http://ip_address:port/ 
+   (Example - http://192.168.66.30:82/) as value
+6. In case of new excel file put the file in htdocs folder and call from Export.xls button from Oracle Form.
+
+

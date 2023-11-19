@@ -1,0 +1,28 @@
+step-1 : First go to report configuration file directory D:\DevSuiteHome_1\reports\conf or D:\oracle\FRHome_1\reports\conf
+
+step-2 : Then open cgicmd.dat file
+
+step-3 : Then go below until the end of the file
+
+step-4 : Then paste last line of this file
+
+step-5 : Then go to company_tbl and then go to rpt_server column and see the value.
+
+step-6 : Then check the first key below and the value of the rpt server column. These must be same.
+
+step-7 : Then ReStart Application server service.
+
+step-8 : In Case of Bind to report server failed then open computer network and disable all network and activate only one network.
+
+step-9 : In order to Increase max number of connected user
+
+	Find the file $ORACLE_HOME/reports/conf/repservername.conf
+
+	where $ORACLE_HOME is your applications (not infrastructure) home, and repservername is your reports server name, i.e. rep_markr.
+	Find the line <connection maxConnect="20" idleTimeOut="15">
+	Change the maxConnect value to something like "100"
+	Restart your reports server.
+
+-----------------------------------------------------------------------------------------------
+rep_food_migwin: userid=foodv2win/Winter2017@orcldb destype=cache desformat=pdf %*
+-----------------------------------------------------------------------------------------------

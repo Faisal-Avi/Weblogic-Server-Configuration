@@ -1,0 +1,117 @@
+-1. Uninstall Weblogic 11g -
+https://www.youtube.com/watch?v=GlA5KfnOmBU&ab_channel=OracleDBSolutions
+
+
+0. Install Java 7.75
+
+D:\DATA\Oracle+OS+MS Office\Oracle\11g WeblogicConfiguration\WebLogicSoftwareConfiguration11g>"C:\Program Files\Java\jdk1.7.0_75\bin\java.exe" -Xmx1024m -jar wls1036_generic.jar
+
+Forms Server Configuration
+--------------------------
+--------------------------
+1. Copy database tns to weblogic server tns (2 locations) :
+	weblogic
+	---------
+	D:\oracle\middleware\asinst_1\config\tnsnames.ora
+	
+	Fusion Middleware
+	-----------------
+	D:\oracle\middleware\oracle_frhome1\network\admin\tnsnames.ora
+	
+2. Copy key to formsweb.cfg file (1 location) :
+	D:\oracle\middleware\user_projects\domains\classicDomain\config\fmwconfig\Servers\WLS_FORMS\application\config\formsweb.cfg
+	
+3. Webutil configuration :
+	Jar file copy to java folder (Java folder location :)
+	
+	D:\oracle \Middleware\Oracle_FRhome1\Forms\Java
+	
+	1. for excel export copy  
+	
+	jacob-1.14.3-X86.dll
+	jacob-1.14.3-64.dll
+	
+	to 
+	
+	D:\oracle\Middleware\Oracle_frhome1\forms\webutil\Win32
+	D:\oracle\Middleware\Oracle_frhome1\forms\webutil\Win64
+	
+	2. copy
+	sec_pllib.pll
+	sec_pllib.plx
+	webutil.pll
+	webutil.plx
+	webutil.olb
+	
+	to
+	
+	D:\oracle\Middleware\Oracle_FRhome1\forms folder
+	
+4. Webutil.cfg file configuration. See webutil.cfg file in configuration folder. 
+   Webutil.cfg file location -
+   D:\oracle\Middleware\asinst_1\config\formscomponent\forms\server
+   And modify like below -
+   
+   #NOTE: By default the file transfer is disabled as a security measure
+	transfer.database.enabled=TRUE
+	transfer.appsrv.enabled=TRUE
+	transfer.appsrv.workAreaRoot=d:\allattachment
+	transfer.appsrv.accessControl=FALSE
+	#List transfer.appsrv.read.<n> directories
+	transfer.appsrv.read.1=e:\DEKKO_ERP\attachment\image
+	transfer.appsrv.read.2=e:\DEKKO_ERP\attachment\file
+	transfer.appsrv.read.3=e:\DEKKO_ERP\attachment\audio
+	transfer.appsrv.read.4=e:\DEKKO_ERP\attachment\video
+	#List transfer.appsrv.write.<n> directories
+	transfer.appsrv.write.1=e:\DEKKO_ERP\attachment\image
+	transfer.appsrv.write.2=e:\DEKKO_ERP\attachment\file
+	transfer.appsrv.write.3=e:\DEKKO_ERP\attachment\audio
+	transfer.appsrv.write.4=e:\DEKKO_ERP\attachment\video
+	transfer.database.enabled=TRUE
+
+	# 4. Others
+	# Details
+	# -------
+	# BlockAllowHeartBeat     : To continue the heart beat communication with the
+	#                           server when set to TRUE. By default the value is
+	#                           set to False. When False there would not be heart 
+	#                           beat communication in blocking mode.
+
+	BlockAllowHeartBeat=False
+   
+
+Report Server Configuration
+--------------------------
+--------------------------
+1. Copy report key + user/pass to cigcmd.dat file after last line. 1 locations - 
+	
+	D:\oracle\Middleware\user_projects\domains\classicDomain\config\fmwconfig\Servers\WLS_REPORTS\applications   -- right location
+	
+	rep_garments: userid=vendor1/vendor1@erp destype=cache desformat=pdf %*
+
+	
+Set user name password :
+-----------------------
+-----------------------
+boot.properties file location :
+
+D:\oracle\middleware\user_projects\domains\classicDomain\server\AdminServer\Security\boot.properties
+
+write -
+
+username = weblogic
+password = Weblogic123
+
+Then copy boot.properties file to 
+
+D:\Oracle\Middleware\user_projects\domains\classicDomain\server\WLS_FORMS\security
+and 
+D:\Oracle\Middleware\user_projects\domains\classicDomain\server\WLS_REPORTS\security
+
+Restart pc. Check opmnctl status. Start admin, forms and report server. enjoy :)
+
+
+/*
+lock file locations:
+C:\Oracle\Middleware\user_projects\domains\ClassicDomain\servers\AdminServer\tmp
+*/ -- do nothing

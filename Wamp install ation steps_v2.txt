@@ -1,0 +1,60 @@
+1. Install Python 3.6+
+2. Install Django 1.11+
+3. Start a sample project
+	cmd>django-admin.exe startproject dekko_group
+	cmd>cd dekko_group
+	cmd>python manage.py startapp api
+4. Before install wamp please install Visual C++ Service Packs from below links -
+	-- VC9 Packages (Visual C++ 2008 SP1)
+	http://www.microsoft.com/en-us/download/details.aspx?id=5582
+	http://www.microsoft.com/en-us/download/details.aspx?id=2092
+	-- VC10 Packages (Visual C++ 2010 SP1)
+	http://www.microsoft.com/en-us/download/details.aspx?id=8328
+	http://www.microsoft.com/en-us/download/details.aspx?id=13523
+	-- VC11 Packages (Visual C++ 2012 Update 4)
+	The two files VSU4\vcredist_x86.exe and VSU4\vcredist_x64.exe to be download are on the same page: http://www.microsoft.com/en-us/download/details.aspx?id=30679
+	-- VC13 Packages Update 5(Visual C++ 2013)
+	The two files VSU4\vcredist_x86.exe and VSU4\vcredist_x64.exe to be download are on the same page: https://support.microsoft.com/en-us/help/4032938/
+	-- VC14 Packages (Visual C++ 2015 Update 3) Supersedes by VC15
+	-- VC15 Redistribuable (Visual C++ 2017)Supersedes by VC16
+	-- VC16 Redistribuable (Visual C++ 2015-2019)
+	https://aka.ms/vs/16/release/VC_redist.x86.exe 
+	https://aka.ms/vs/16/release/VC_redist.x64.exe
+	
+	--https://answers.microsoft.com/en-us/windows/forum/windows_8-winapps/the-program-cant-start-because-msvcr110dll-is/f052d325-3af9-4ae5-990b-b080799724db
+5. Then install wamp 3+
+6. Then install Microsoft Visual c++ Studio. For please use below link
+	https://www.scivision.dev/python-windows-visual-c-14-required/
+
+7. Install mod_wsgi
+	set "MOD_WSGI_APACHE_ROOTDIR=C:\wamp64\bin\apache\apache2.4.39"
+	pip install mod_wsgi==4.5.20
+	
+8. get below path by in cmd > mod_wsgi-express module-config
+	LoadFile "c:/python36/python36.dll"
+	LoadModule wsgi_module "c:/python36/lib/site-packages/mod_wsgi/server/mod_wsgi.cp36-win_amd64.pyd"
+	WSGIPythonHome "c:/python36"
+	
+9. configure apache - paste below lines at the end of httpd.conf
+	LoadFile "c:/python36/python36.dll"
+	LoadModule wsgi_module "c:/python36/lib/site-packages/mod_wsgi/server/mod_wsgi.cp36-win_amd64.pyd"
+	WSGIPythonHome "c:/python36"
+	WSGIScriptAlias / "C:/dekko_group/dekko_group/wsgi.py"
+	WSGIPythonPath "c:/dekko_group"
+
+	<Directory C:/dekko_group>
+		Require all granted
+	</Directory>
+
+	<Directory "C:/dekko_group/dekko_group">
+		<Files wsgi.py>
+			Require all granted
+		</Files>
+	</Directory>
+10. Install a 64-bit oracle client
+
+Enjoy :)
+	
+	
+	
+https://www.youtube.com/watch?v=F6-yJpPEpoE&t=365s
